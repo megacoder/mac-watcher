@@ -1,5 +1,18 @@
-#!/bin/zsh
 #!/bin/bash
+#!/bin/zsh
+
+ME=$(basename "${0}")
+USAGE="usage: ${ME} [-i <seconds>]"
+
+INTERVAL=15
+while getopts i: c; do
+	case "${c}" in
+	i ) INTERVAL="${OPTARG}";;
+	* ) echo "${USAGE}" >&2; exit 1;;
+	esac
+done
+
+shift $(expr "${OPTIND}" - 1)
 
 # I use zsh(1) but this will also work in bash(1).
 
@@ -23,5 +36,5 @@ while :; do
 		diff -y --width=90 <(echo "${OLD}") <(echo "${NEW}")
 		OLD="${NEW}"
 	fi
-	sleep 15
+	sleep "${INTERVAL}"
 done
